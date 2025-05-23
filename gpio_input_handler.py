@@ -3,8 +3,6 @@
 from gpiozero import RotaryEncoder, Button
 import config
 
-# These will be set by the main script to functions that can alter main_app_state
-# and call functions from other modules.
 rotate_callback = None
 click_callback = None
 start_action_callback = None
@@ -34,13 +32,13 @@ def setup_gpio(rotate_cb, click_cb, start_cb, stop_cb):
         button_instance.when_pressed = internal_handle_click
         
         start_switch_instance = Button(config.START_BUTTON_GPIO, pull_up=True, bounce_time=0.2)
-        start_switch_instance.when_pressed = start_action_callback # Directly call the main app's function
+        start_switch_instance.when_pressed = start_action_callback
         
         stop_switch_instance = Button(config.STOP_BUTTON_GPIO, pull_up=True, bounce_time=0.2)
-        stop_switch_instance.when_pressed = stop_action_callback # Directly call the main app's function
+        stop_switch_instance.when_pressed = stop_action_callback
         
         print("GPIO setup complete.")
-        return encoder_instance # Return encoder if needed by main for steps reset
+        return encoder_instance 
     except Exception as e:
         print(f"ERROR: GPIO setup failed: {e}")
         return None
@@ -48,7 +46,7 @@ def setup_gpio(rotate_cb, click_cb, start_cb, stop_cb):
 def internal_handle_rotation():
     if encoder_instance and rotate_callback:
         delta = round(encoder_instance.steps)
-        encoder_instance.steps = 0  # Reset for the next delta
+        encoder_instance.steps = 0 
         if delta != 0:
             rotate_callback(delta)
 
@@ -61,10 +59,14 @@ def cleanup_gpio():
     global encoder_instance, button_instance, start_switch_instance, stop_switch_instance
     if encoder_instance:
         encoder_instance.close()
+        encoder_instance = None
     if button_instance:
         button_instance.close()
+        button_instance = None
     if start_switch_instance:
         start_switch_instance.close()
+        start_switch_instance = None
     if stop_switch_instance:
         stop_switch_instance.close()
+        stop_switch_instance = None
     print("GPIO resources closed.")
