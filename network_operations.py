@@ -25,6 +25,7 @@ def set_hostname_on_system(wlx_interface_val):
         new_hostname = f"{config.HOSTNAME_PREFIX}{last_chars}"
         try:
             subprocess.run(f"sudo hostnamectl set-hostname {new_hostname}", shell=True, check=True)
+            update_etc_hosts(new_hostname)
             print(f"Hostname set to: {new_hostname}")
             return new_hostname
         except subprocess.CalledProcessError as e:
@@ -33,6 +34,34 @@ def set_hostname_on_system(wlx_interface_val):
     else:
         print("WARNING: Could not set hostname because wlx interface was not found.")
         return f"{config.HOSTNAME_PREFIX}NOIF"
+
+def update_etc_hosts(new_hostname):
+    hosts_path = "/etc/hosts"
+    try:
+        # Read current /etc/hosts
+        with open(hosts_path, 'r') as f:
+            hosts_content = f.readlines()
+        
+        # Update the line starting with 127.0.1.1
+        updated = False
+        for i, line in enumerate(hosts_content):
+            if re.match(r'^127\.0\.1\.1\s+\S+', line.strip()):
+                hosts_content[i] = f"127.0.1.1\t{new_hostname}\n"
+                updated = True
+                break
+        
+        if not updated:
+            hosts_content.append(f"\n127.0.1.1\t{new_hostname}\n")
+        
+        # Write to temp file, then move with sudo
+        temp_path = "/tmp/hosts.tmp"
+        with open(temp_path, 'w') as f:
+            f.writelines(hosts_content)
+        
+        subprocess.run(["sudo", "mv", temp_path, hosts_path], check=True)
+        
+    except Exception as e:
+        print(f"Error: {e}")
 
 def clear_existing_wifi_connections(wlx_interface_val):
     """Removes all existing WiFi connections from NetworkManager."""
