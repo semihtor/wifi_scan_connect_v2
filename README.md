@@ -49,6 +49,9 @@ The system is designed to use an external USB WiFi adapter, keeping the onboard 
 -   Jumper wires
 -   Breadboard (optional, for easier connections)
 
+## Wiring Diagram
+![Wiring Diagram](images/wiring_diagram.png)
+
 ## Software Requirements
 
 -   **OS:** Raspberry Pi OS (I've used Bookworm 32-bit).
