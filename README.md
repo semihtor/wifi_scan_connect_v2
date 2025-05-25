@@ -35,6 +35,9 @@ The system is designed to use an external USB WiFi adapter, keeping the onboard 
     -   On the APs page, only the currently selected AP name scrolls if too long; other AP names are truncated.
 -   **Modular Codebase:** Organized into separate Python files for configuration, display management, network operations, and GPIO handling.
 
+## Video Demo
+[![Video Demo of the Project](https://img.youtube.com/vi/nlAtluvpgFA/0.jpg)](https://www.youtube.com/watch?v=nlAtluvpgFA)
+
 ## Hardware Requirements
 
 -   Raspberry Pi Zero 2 W (or any Raspberry Pi with compatible GPIO and I2C, USB)
