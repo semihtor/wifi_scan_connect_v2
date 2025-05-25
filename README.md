@@ -12,7 +12,7 @@ This project provides a user-friendly interface on a small OLED display to:
 - Navigate menus using a rotary encoder.
 - Start and stop the main application using dedicated GPIO buttons.
 
-The system is designed to use an external USB WiFi adapter, keeping the onboard WiFi потенциально free or disabled. On startup, it clears any previously stored WiFi credentials managed by NetworkManager for a clean slate.
+The system is designed to use an external USB WiFi adapter, keeping the onboard WiFi free or disabled. On startup, it clears any previously stored WiFi credentials managed by NetworkManager for a clean slate.
 
 ## Features
 
